@@ -109,3 +109,6 @@ Como explicar na entrevista
 
 Repositório e higiene
 - .gitignore ignora IDE/build/logs; .editorconfig padroniza formatação
+
+Notas de build (CI)
+- Encoding/Filtering: o pom.xml define UTF-8 (source/reporting) e desabilita filtering em src/main/resources para evitar erros de MalformedInputException no Linux (GitHub Actions) ao processar arquivos .properties que não usam placeholders.
