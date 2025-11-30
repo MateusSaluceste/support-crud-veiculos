@@ -1,8 +1,6 @@
 package org.example.support.controller;
 
 import org.example.support.domain.entity.Veiculo;
-import org.example.support.domain.enums.StatusVeiculo;
-import org.example.support.dto.veiculo.VeiculoResponse;
 import org.example.support.service.VeiculoService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,9 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.ArgumentMatchers.*;
 
 @WebMvcTest(controllers = VeiculoController.class)
 class VeiculoControllerTest {

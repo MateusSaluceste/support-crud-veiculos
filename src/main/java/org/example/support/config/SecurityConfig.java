@@ -4,9 +4,9 @@ import org.example.support.domain.entity.Usuario;
 import org.example.support.repository.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/me").authenticated()
                 .anyRequest().authenticated()
             )
-            .httpBasic(basic -> {})
+            .httpBasic(Customizer.withDefaults())
             .headers(h -> h.frameOptions(f -> f.sameOrigin())); // para H2 console
         return http.build();
     }
@@ -39,12 +39,11 @@ public class SecurityConfig {
             Usuario u = usuarioRepository.findByUsername(username)
                     .filter(Usuario::isAtivo)
                     .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-            UserDetails details = User
+            return User
                     .withUsername(u.getUsername())
                     .password(u.getPassword())
                     .roles(u.getRole().name())
                     .build();
-            return details;
         };
     }
 
