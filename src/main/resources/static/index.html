@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Painel de Vendas de Veículos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="pagina">
+    <header class="header">
+        <div>
+            <h1>Support - Painel de Vendas de Veículos</h1>
+            <p>Gerencie veículos, clientes e vendas em um só lugar.</p>
+        </div>
+        <small id="infoUsuario">Não autenticado</small>
+    </header>
+
+    <section class="card">
+        <h3>Autenticação</h3>
+        <div class="grid-duas-colunas">
+            <div>
+                <div class="grupo-input">
+                    <label for="perfil">Perfil rápido</label>
+                    <select id="perfil">
+                        <option value="">Selecione</option>
+                        <option value="admin">Administrador</option>
+                        <option value="vendedor">Vendedor</option>
+                    </select>
+                </div>
+            </div>
+            <div></div>
+        </div>
+        <div class="grid-duas-colunas">
+            <div class="grupo-input">
+                <label for="usuario">Usuário</label>
+                <input id="usuario" type="text" placeholder="Digite o usuário">
+            </div>
+            <div class="grupo-input">
+                <label for="senha">Senha</label>
+                <input id="senha" type="password" placeholder="Digite a senha">
+            </div>
+        </div>
+        <div class="linha-botoes" style="margin-top: 12px;">
+            <button class="btn-primario" id="btnCredenciais">Definir credenciais</button>
+        </div>
+        <div class="status-bar" id="statusAuth">Nenhuma credencial configurada</div>
+    </section>
+
+    <div class="abas">
+        <button class="aba ativa" data-aba="veiculos">Veículos</button>
+        <button class="aba" data-aba="clientes">Clientes</button>
+        <button class="aba" data-aba="vendas">Vendas</button>
+    </div>
+
+    <section class="card painel ativo" id="painelVeiculos">
+        <div class="grid-duas-colunas">
+            <div>
+                <h3>Veículos</h3>
+                <div class="grid-duas-colunas">
+                    <div class="grupo-input">
+                        <label for="filtroMarca">Marca</label>
+                        <input id="filtroMarca" type="text" placeholder="Ex: Toyota">
+                    </div>
+                    <div class="grupo-input">
+                        <label for="filtroModelo">Modelo</label>
+                        <input id="filtroModelo" type="text" placeholder="Ex: Corolla">
+                    </div>
+                    <div class="grupo-input">
+                        <label for="filtroAno">Ano</label>
+                        <input id="filtroAno" type="number" placeholder="Ex: 2020">
+                    </div>
+                    <div class="grupo-input">
+                        <label>Status</label>
+                        <input id="filtroStatus" type="text" placeholder="Ex: ATIVO">
+                    </div>
+                </div>
+                <button class="btn-secundario" id="btnBuscarVeiculos">Buscar</button>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Marca/Modelo</th>
+                        <th>Ano</th>
+                        <th>Placa</th>
+                        <th>Estoque</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody id="listaVeiculos"></tbody>
+                </table>
+                <div class="status-bar" id="statusVeiculos">Aguardando busca</div>
+            </div>
+            <div>
+                <h3>Novo veículo</h3>
+                <div class="grupo-input">
+                    <label for="novoMarca">Marca</label>
+                    <input id="novoMarca" type="text">
+                </div>
+                <div class="grupo-input">
+                    <label for="novoModelo">Modelo</label>
+                    <input id="novoModelo" type="text">
+                </div>
+                <div class="grupo-input">
+                    <label for="novoAno">Ano</label>
+                    <input id="novoAno" type="number">
+                </div>
+                <div class="grupo-input">
+                    <label for="novoPlaca">Placa</label>
+                    <input id="novoPlaca" type="text">
+                </div>
+                <div class="grupo-input">
+                    <label for="novoPreco">Preço sugerido</label>
+                    <input id="novoPreco" type="number" step="0.01">
+                </div>
+                <div class="grupo-input">
+                    <label for="novoEstoque">Quantidade em estoque</label>
+                    <input id="novoEstoque" type="number">
+                </div>
+                <button class="btn-primario" id="btnCriarVeiculo">Criar veículo</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card painel" id="painelClientes">
+        <div class="grid-duas-colunas">
+            <div>
+                <h3>Clientes</h3>
+                <div class="grid-duas-colunas">
+                    <div class="grupo-input" style="grid-column: span 2;">
+                        <label for="filtroCliente">Buscar por nome ou CPF</label>
+                        <input id="filtroCliente" type="text" placeholder="Digite para buscar">
+                    </div>
+                </div>
+                <button class="btn-secundario" id="btnBuscarClientes">Buscar</button>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Ativo</th>
+                    </tr>
+                    </thead>
+                    <tbody id="listaClientes"></tbody>
+                </table>
+                <div class="status-bar" id="statusClientes">Aguardando busca</div>
+            </div>
+            <div>
+                <h3>Novo cliente</h3>
+                <div class="grupo-input">
+                    <label for="clienteNome">Nome</label>
+                    <input id="clienteNome" type="text">
+                </div>
+                <div class="grupo-input">
+                    <label for="clienteCpf">CPF</label>
+                    <input id="clienteCpf" type="text">
+                </div>
+                <div class="grupo-input">
+                    <label for="clienteEmail">Email</label>
+                    <input id="clienteEmail" type="email">
+                </div>
+                <div class="grupo-input">
+                    <label for="clienteTelefone">Telefone</label>
+                    <input id="clienteTelefone" type="text">
+                </div>
+                <div class="grupo-input">
+                    <label for="clienteEndereco">Endereço</label>
+                    <input id="clienteEndereco" type="text">
+                </div>
+                <button class="btn-primario" id="btnCriarCliente">Criar cliente</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="card painel" id="painelVendas">
+        <div class="grid-duas-colunas">
+            <div>
+                <h3>Criar venda</h3>
+                <div class="grupo-input">
+                    <label for="vendaCliente">ID do cliente</label>
+                    <input id="vendaCliente" type="number">
+                </div>
+                <div class="grupo-input">
+                    <label for="vendaPagamento">Forma de pagamento</label>
+                    <select id="vendaPagamento">
+                        <option value="PIX">PIX</option>
+                        <option value="CREDITO">CREDITO</option>
+                        <option value="DEBITO">DEBITO</option>
+                        <option value="DINHEIRO">DINHEIRO</option>
+                    </select>
+                </div>
+                <div class="grupo-input">
+                    <label for="vendaVeiculo">ID do veículo</label>
+                    <input id="vendaVeiculo" type="number">
+                </div>
+                <div class="grupo-input">
+                    <label for="vendaQuantidade">Quantidade</label>
+                    <input id="vendaQuantidade" type="number" value="1">
+                </div>
+                <button class="btn-primario" id="btnCriarVenda">Registrar venda</button>
+            </div>
+            <div>
+                <h3>Operações em venda</h3>
+                <div class="grupo-input">
+                    <label for="operacaoVendaId">ID da venda</label>
+                    <input id="operacaoVendaId" type="number">
+                </div>
+                <div class="linha-botoes" style="margin-top: 8px;">
+                    <button class="btn-secundario" id="btnPagarVenda">Pagar venda</button>
+                    <button class="btn-perigo" id="btnCancelarVenda">Cancelar venda</button>
+                </div>
+                <div class="status-bar" id="statusVendas">Pronto para registrar vendas</div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

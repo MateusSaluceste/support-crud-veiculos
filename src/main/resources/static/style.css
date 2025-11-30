@@ -1,0 +1,128 @@
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Helvetica, Arial, sans-serif;
+    background: #f3f5f7;
+    color: #1f2933;
+}
+h1, h2, h3 {
+    margin: 0;
+}
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-weight: 600;
+    transition: opacity .2s ease;
+}
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+button.btn-primario { background: #2563eb; color: #fff; }
+button.btn-secundario { background: #e2e8f0; color: #1f2933; }
+button.btn-perigo { background: #dc2626; color: #fff; }
+input, select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #cbd5f5;
+    background: #fff;
+}
+label {
+    font-size: 14px;
+    color: #4b5563;
+}
+.pagina {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+}
+.header small {
+    color: #4b5563;
+}
+.card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    padding: 20px;
+    margin-bottom: 24px;
+}
+.card h3 {
+    margin-bottom: 16px;
+}
+.grid-duas-colunas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+.grupo-input { margin-bottom: 12px; }
+.status-bar {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #e0f2fe;
+    color: #075985;
+    font-size: 14px;
+}
+.status-bar.erro {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+.abas {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.aba {
+    padding: 12px 20px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    color: #1f2933;
+    font-weight: 600;
+}
+.aba.ativa {
+    background: #2563eb;
+    color: #fff;
+}
+.painel {
+    display: none;
+}
+.painel.ativo {
+    display: block;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+th, td {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+}
+th {
+    background: #f8fafc;
+    font-size: 14px;
+    color: #475569;
+}
+.linha-botoes {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .abas {
+        flex-wrap: wrap;
+    }
+}
