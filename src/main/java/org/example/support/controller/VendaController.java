@@ -3,8 +3,8 @@ package org.example.support.controller;
 import jakarta.validation.Valid;
 import org.example.support.domain.entity.Venda;
 import org.example.support.domain.enums.VendaStatus;
-import org.example.support.dto.venda.VendaCreateRequest;
-import org.example.support.dto.venda.VendaResponse;
+import org.example.support.dto.venda.VendaEntrada;
+import org.example.support.dto.venda.VendaSaida;
 import org.example.support.repository.VendaRepository;
 import org.example.support.service.VendaService;
 import org.springframework.data.domain.Page;
@@ -26,33 +26,33 @@ public class VendaController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
-    public Page<VendaResponse> listar(@RequestParam(required = false) VendaStatus status, Pageable pageable) {
-        return vendaRepository.search(status, pageable).map(VendaResponse::from);
+    public Page<VendaSaida> listar(@RequestParam(required = false) VendaStatus status, Pageable pageable) {
+        return vendaRepository.search(status, pageable).map(VendaSaida::from);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
-    public VendaResponse get(@PathVariable Long id) {
-        return VendaResponse.from(vendaService.buscar(id));
+    public VendaSaida obter(@PathVariable Long id) {
+        return VendaSaida.from(vendaService.obterPorId(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
-    public VendaResponse criar(@Valid @RequestBody VendaCreateRequest req) {
-        Venda v = vendaService.criarVenda(req);
-        return VendaResponse.from(v);
+    public VendaSaida criar(@Valid @RequestBody VendaEntrada req) {
+        Venda v = vendaService.registrarVenda(req);
+        return VendaSaida.from(v);
     }
 
     @PatchMapping("/{id}/pagar")
     @PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
-    public VendaResponse pagar(@PathVariable Long id) {
-        return VendaResponse.from(vendaService.pagar(id));
+    public VendaSaida pagar(@PathVariable Long id) {
+        return VendaSaida.from(vendaService.pagar(id));
     }
 
     @PatchMapping("/{id}/cancelar")
     @PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
-    public VendaResponse cancelar(@PathVariable Long id) {
-        return VendaResponse.from(vendaService.cancelar(id));
+    public VendaSaida cancelar(@PathVariable Long id) {
+        return VendaSaida.from(vendaService.cancelar(id));
     }
 }

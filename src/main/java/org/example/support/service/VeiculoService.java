@@ -2,7 +2,7 @@ package org.example.support.service;
 
 import org.example.support.domain.entity.Veiculo;
 import org.example.support.domain.enums.StatusVeiculo;
-import org.example.support.dto.veiculo.VeiculoRequest;
+import org.example.support.dto.veiculo.VeiculoEntrada;
 import org.example.support.exception.NotFoundException;
 import org.example.support.repository.VeiculoRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,44 +23,44 @@ public class VeiculoService {
         return veiculoRepository.search(marca, modelo, ano, status, pageable);
     }
 
-    public Veiculo buscar(Long id) {
+    public Veiculo obterPorId(Long id) {
         return veiculoRepository.findById(id).orElseThrow(() -> new NotFoundException("Veículo não encontrado"));
     }
 
     @Transactional
-    public Veiculo criar(VeiculoRequest req) {
+    public Veiculo criar(VeiculoEntrada req) {
         Veiculo v = new Veiculo();
-        copy(req, v);
+        preencherDados(req, v);
         try {
             return veiculoRepository.save(v);
         } catch (DataIntegrityViolationException e) {
-            throw e; // tratado no advice -> 409
+            throw e;
         }
     }
 
     @Transactional
-    public Veiculo atualizar(Long id, VeiculoRequest req) {
-        Veiculo v = buscar(id);
-        copy(req, v);
+    public Veiculo atualizar(Long id, VeiculoEntrada req) {
+        Veiculo v = obterPorId(id);
+        preencherDados(req, v);
         return veiculoRepository.save(v);
     }
 
     @Transactional
     public void deletar(Long id) {
-        Veiculo v = buscar(id);
+        Veiculo v = obterPorId(id);
         v.setAtivo(false);
         v.setStatus(StatusVeiculo.INATIVO);
         veiculoRepository.save(v);
     }
 
     @Transactional
-    public Veiculo ajustarEstoque(Long id, int novoEstoque) {
-        Veiculo v = buscar(id);
+    public Veiculo atualizarEstoque(Long id, int novoEstoque) {
+        Veiculo v = obterPorId(id);
         v.setQuantidadeEmEstoque(Math.max(0, novoEstoque));
         return veiculoRepository.save(v);
     }
 
-    private void copy(VeiculoRequest req, Veiculo v) {
+    private void preencherDados(VeiculoEntrada req, Veiculo v) {
         v.setMarca(req.marca);
         v.setModelo(req.modelo);
         v.setAno(req.ano);

@@ -5,8 +5,8 @@ import org.example.support.domain.entity.ItemVenda;
 import org.example.support.domain.entity.Veiculo;
 import org.example.support.domain.entity.Venda;
 import org.example.support.domain.enums.VendaStatus;
-import org.example.support.dto.venda.ItemVendaRequest;
-import org.example.support.dto.venda.VendaCreateRequest;
+import org.example.support.dto.venda.ItemVendaEntrada;
+import org.example.support.dto.venda.VendaEntrada;
 import org.example.support.exception.BusinessException;
 import org.example.support.exception.NotFoundException;
 import org.example.support.repository.ClienteRepository;
@@ -31,8 +31,8 @@ public class VendaService {
     }
 
     @Transactional
-    public Venda criarVenda(VendaCreateRequest request) {
-        List<ItemVendaRequest> itensReq = request.itens;
+    public Venda registrarVenda(VendaEntrada request) {
+        List<ItemVendaEntrada> itensReq = request.itens;
         if (itensReq == null || itensReq.isEmpty()) {
             throw new BusinessException("Venda deve conter ao menos um item");
         }
@@ -41,7 +41,7 @@ public class VendaService {
         venda.setCliente(cliente);
         venda.setFormaPagamento(request.formaPagamento);
         BigDecimal total = BigDecimal.ZERO;
-        for (ItemVendaRequest ir : itensReq) {
+        for (ItemVendaEntrada ir : itensReq) {
             Veiculo veiculo = veiculoRepository.findById(ir.veiculoId).orElseThrow(() -> new NotFoundException("Veículo não encontrado: " + ir.veiculoId));
             ItemVenda item = new ItemVenda();
             item.setVeiculo(veiculo);
@@ -56,27 +56,25 @@ public class VendaService {
         return vendaRepository.save(venda);
     }
 
-    public Venda buscar(Long id) {
+    public Venda obterPorId(Long id) {
         return vendaRepository.findById(id).orElseThrow(() -> new NotFoundException("Venda não encontrada"));
     }
 
     @Transactional
     public Venda pagar(Long id) {
-        Venda venda = buscar(id);
+        Venda venda = obterPorId(id);
         if (venda.getStatus() == VendaStatus.PAGA) {
             return venda;
         }
         if (venda.getItens().isEmpty()) {
             throw new BusinessException("Venda sem itens não pode ser paga");
         }
-        // valida estoque
         venda.getItens().forEach(item -> {
             Veiculo v = item.getVeiculo();
             if (v.getQuantidadeEmEstoque() < item.getQuantidade()) {
                 throw new BusinessException("Estoque insuficiente para veículo placa " + v.getPlaca());
             }
         });
-        // baixa estoque
         venda.getItens().forEach(item -> {
             Veiculo v = item.getVeiculo();
             v.setQuantidadeEmEstoque(v.getQuantidadeEmEstoque() - item.getQuantidade());
@@ -88,9 +86,8 @@ public class VendaService {
 
     @Transactional
     public Venda cancelar(Long id) {
-        Venda venda = buscar(id);
+        Venda venda = obterPorId(id);
         if (venda.getStatus() == VendaStatus.CANCELADA) return venda;
-        // se já foi paga, devolve estoque
         if (venda.getStatus() == VendaStatus.PAGA) {
             venda.getItens().forEach(item -> {
                 Veiculo v = item.getVeiculo();

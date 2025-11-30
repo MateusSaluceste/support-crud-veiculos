@@ -7,7 +7,7 @@ import org.example.support.domain.enums.FormaPagamento;
 
 import java.util.List;
 
-public class VendaCreateRequest {
+public class VendaEntrada {
     @NotNull
     public Long clienteId;
 
@@ -16,5 +16,5 @@ public class VendaCreateRequest {
 
     @Valid
     @NotEmpty
-    public List<ItemVendaRequest> itens;
+    public List<ItemVendaEntrada> itens;
 }

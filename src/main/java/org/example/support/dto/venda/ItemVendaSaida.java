@@ -4,7 +4,7 @@ import org.example.support.domain.entity.ItemVenda;
 
 import java.math.BigDecimal;
 
-public class ItemVendaResponse {
+public class ItemVendaSaida {
     public Long id;
     public Long veiculoId;
     public String veiculoPlaca;
@@ -12,8 +12,8 @@ public class ItemVendaResponse {
     public BigDecimal precoUnitarioNoMomento;
     public BigDecimal subtotal;
 
-    public static ItemVendaResponse from(ItemVenda i) {
-        ItemVendaResponse r = new ItemVendaResponse();
+    public static ItemVendaSaida from(ItemVenda i) {
+        ItemVendaSaida r = new ItemVendaSaida();
         r.id = i.getId();
         r.veiculoId = i.getVeiculo().getId();
         r.veiculoPlaca = i.getVeiculo().getPlaca();

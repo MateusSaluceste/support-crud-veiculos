@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .httpBasic(Customizer.withDefaults())
-            .headers(h -> h.frameOptions(f -> f.sameOrigin())); // para H2 console
+            .headers(h -> h.frameOptions(f -> f.sameOrigin()));
         return http.build();
     }
 

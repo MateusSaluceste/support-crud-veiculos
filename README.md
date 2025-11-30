@@ -26,6 +26,39 @@ Estrutura (onde encontrar no painel da esquerda)
 
 Observação: src\main\java\org\example\Main.java é apenas um exemplo do IntelliJ e NÃO é usado.
 
+Diagrama de arquitetura (ASCII)
+
+    +-------------------------------+
+    |        Interface REST         |
+    |  (Controllers: /api/**)       |
+    +---------------+---------------+
+                    |
+                    v
+    +---------------+---------------+
+    |            Services           |
+    |  Regras de negócio,          |
+    |  transações (@Transactional)  |
+    +---------------+---------------+
+                    |
+                    v
+    +---------------+---------------+
+    |            Repositories       |
+    |  Spring Data JPA (CRUD/Query) |
+    +---------------+---------------+
+                    |
+                    v
+    +---------------+---------------+
+    |      Entities / Domain        |
+    |  JPA + validações (Bean Val.) |
+    +---------------+---------------+
+                    |
+                    v
+    +---------------+---------------+
+    |      Banco de Dados           |
+    |  H2 (dev) / PostgreSQL (prod) |
+    |  Migrações: Flyway            |
+    +-------------------------------+
+
 Como rodar
 1) Via IDE (IntelliJ): Run em SupportApplication (profile dev é padrão)
 2) Via Maven: `mvn spring-boot:run`

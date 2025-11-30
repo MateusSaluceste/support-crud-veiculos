@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class VendaResponse {
+public class VendaSaida {
     public Long id;
     public Long clienteId;
     public String clienteNome;
@@ -16,10 +16,10 @@ public class VendaResponse {
     public FormaPagamento formaPagamento;
     public VendaStatus status;
     public BigDecimal valorTotal;
-    public List<ItemVendaResponse> itens;
+    public List<ItemVendaSaida> itens;
 
-    public static VendaResponse from(Venda v) {
-        VendaResponse r = new VendaResponse();
+    public static VendaSaida from(Venda v) {
+        VendaSaida r = new VendaSaida();
         r.id = v.getId();
         r.clienteId = v.getCliente().getId();
         r.clienteNome = v.getCliente().getNome();
@@ -27,7 +27,7 @@ public class VendaResponse {
         r.formaPagamento = v.getFormaPagamento();
         r.status = v.getStatus();
         r.valorTotal = v.getValorTotal();
-        r.itens = v.getItens().stream().map(ItemVendaResponse::from).toList();
+        r.itens = v.getItens().stream().map(ItemVendaSaida::from).toList();
         return r;
     }
 }

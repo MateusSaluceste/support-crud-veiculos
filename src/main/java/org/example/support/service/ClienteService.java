@@ -1,7 +1,7 @@
 package org.example.support.service;
 
 import org.example.support.domain.entity.Cliente;
-import org.example.support.dto.cliente.ClienteRequest;
+import org.example.support.dto.cliente.ClienteEntrada;
 import org.example.support.exception.NotFoundException;
 import org.example.support.repository.ClienteRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,14 +22,14 @@ public class ClienteService {
         return clienteRepository.search(q, pageable);
     }
 
-    public Cliente buscar(Long id) {
+    public Cliente obterPorId(Long id) {
         return clienteRepository.findById(id).orElseThrow(() -> new NotFoundException("Cliente não encontrado"));
     }
 
     @Transactional
-    public Cliente criar(ClienteRequest req) {
+    public Cliente criar(ClienteEntrada req) {
         Cliente c = new Cliente();
-        copy(req, c);
+        preencherDados(req, c);
         try {
             return clienteRepository.save(c);
         } catch (DataIntegrityViolationException e) {
@@ -38,20 +38,20 @@ public class ClienteService {
     }
 
     @Transactional
-    public Cliente atualizar(Long id, ClienteRequest req) {
-        Cliente c = buscar(id);
-        copy(req, c);
+    public Cliente atualizar(Long id, ClienteEntrada req) {
+        Cliente c = obterPorId(id);
+        preencherDados(req, c);
         return clienteRepository.save(c);
     }
 
     @Transactional
     public void deletar(Long id) {
-        Cliente c = buscar(id);
+        Cliente c = obterPorId(id);
         c.setAtivo(false);
         clienteRepository.save(c);
     }
 
-    private void copy(ClienteRequest req, Cliente c) {
+    private void preencherDados(ClienteEntrada req, Cliente c) {
         c.setNome(req.nome);
         c.setCpf(req.cpf);
         c.setEmail(req.email);

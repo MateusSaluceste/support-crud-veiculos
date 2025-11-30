@@ -32,7 +32,6 @@ class VeiculoControllerTest {
     @Test
     @WithMockUser(roles = {"ADMIN"})
     void deveListarVeiculosComSucesso() throws Exception {
-        // dado que o service retorna uma página vazia
         Page<Veiculo> pagina = new PageImpl<>(List.of(), PageRequest.of(0, 20), 0);
         Mockito.when(veiculoService.listar(any(), any(), any(), any(), any())).thenReturn(pagina);
 

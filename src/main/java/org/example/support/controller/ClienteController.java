@@ -2,8 +2,8 @@ package org.example.support.controller;
 
 import jakarta.validation.Valid;
 import org.example.support.domain.entity.Cliente;
-import org.example.support.dto.cliente.ClienteRequest;
-import org.example.support.dto.cliente.ClienteResponse;
+import org.example.support.dto.cliente.ClienteEntrada;
+import org.example.support.dto.cliente.ClienteSaida;
 import org.example.support.service.ClienteService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,28 +22,28 @@ public class ClienteController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
-    public Page<ClienteResponse> listar(@RequestParam(required = false) String q, Pageable pageable) {
-        return clienteService.listar(q, pageable).map(ClienteResponse::from);
+    public Page<ClienteSaida> listar(@RequestParam(required = false) String q, Pageable pageable) {
+        return clienteService.listar(q, pageable).map(ClienteSaida::from);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
-    public ClienteResponse get(@PathVariable Long id) {
-        return ClienteResponse.from(clienteService.buscar(id));
+    public ClienteSaida obter(@PathVariable Long id) {
+        return ClienteSaida.from(clienteService.obterPorId(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
-    public ClienteResponse criar(@Valid @RequestBody ClienteRequest req) {
+    public ClienteSaida criar(@Valid @RequestBody ClienteEntrada req) {
         Cliente c = clienteService.criar(req);
-        return ClienteResponse.from(c);
+        return ClienteSaida.from(c);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
-    public ClienteResponse atualizar(@PathVariable Long id, @Valid @RequestBody ClienteRequest req) {
-        return ClienteResponse.from(clienteService.atualizar(id, req));
+    public ClienteSaida atualizar(@PathVariable Long id, @Valid @RequestBody ClienteEntrada req) {
+        return ClienteSaida.from(clienteService.atualizar(id, req));
     }
 
     @DeleteMapping("/{id}")

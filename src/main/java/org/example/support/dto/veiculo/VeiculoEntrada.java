@@ -7,7 +7,7 @@ import org.example.support.domain.enums.TipoCombustivel;
 
 import java.math.BigDecimal;
 
-public class VeiculoRequest {
+public class VeiculoEntrada {
     @NotBlank
     public String marca;
     @NotBlank

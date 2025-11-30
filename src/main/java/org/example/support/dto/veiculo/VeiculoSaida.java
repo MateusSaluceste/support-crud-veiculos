@@ -7,7 +7,7 @@ import org.example.support.domain.enums.TipoCombustivel;
 
 import java.math.BigDecimal;
 
-public class VeiculoResponse {
+public class VeiculoSaida {
     public Long id;
     public String marca;
     public String modelo;
@@ -24,8 +24,8 @@ public class VeiculoResponse {
     public StatusVeiculo status;
     public boolean ativo;
 
-    public static VeiculoResponse from(Veiculo v) {
-        VeiculoResponse r = new VeiculoResponse();
+    public static VeiculoSaida from(Veiculo v) {
+        VeiculoSaida r = new VeiculoSaida();
         r.id = v.getId();
         r.marca = v.getMarca();
         r.modelo = v.getModelo();

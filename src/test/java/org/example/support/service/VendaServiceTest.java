@@ -5,15 +5,14 @@ import org.example.support.domain.entity.ItemVenda;
 import org.example.support.domain.entity.Veiculo;
 import org.example.support.domain.entity.Venda;
 import org.example.support.domain.enums.VendaStatus;
-import org.example.support.dto.venda.ItemVendaRequest;
-import org.example.support.dto.venda.VendaCreateRequest;
+import org.example.support.dto.venda.ItemVendaEntrada;
+import org.example.support.dto.venda.VendaEntrada;
 import org.example.support.exception.BusinessException;
 import org.example.support.repository.ClienteRepository;
 import org.example.support.repository.VeiculoRepository;
 import org.example.support.repository.VendaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
@@ -41,7 +40,6 @@ class VendaServiceTest {
 
     @Test
     void naoPermitePagarSemEstoque() {
-        // Arrange: venda com item e veiculo sem estoque suficiente
         Cliente cliente = new Cliente();
         cliente.setId(1L);
         when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
@@ -55,18 +53,17 @@ class VendaServiceTest {
 
         when(vendaRepository.save(any(Venda.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        VendaCreateRequest req = new VendaCreateRequest();
+        VendaEntrada req = new VendaEntrada();
         req.clienteId = 1L;
         req.formaPagamento = org.example.support.domain.enums.FormaPagamento.PIX;
-        ItemVendaRequest item = new ItemVendaRequest();
+        ItemVendaEntrada item = new ItemVendaEntrada();
         item.veiculoId = 10L;
         item.quantidade = 1;
         req.itens = List.of(item);
 
-        Venda venda = vendaService.criarVenda(req);
+        Venda venda = vendaService.registrarVenda(req);
         when(vendaRepository.findById(anyLong())).thenReturn(Optional.of(venda));
 
-        // Act + Assert
         BusinessException ex = assertThrows(BusinessException.class, () -> vendaService.pagar(99L));
         assertTrue(ex.getMessage().toLowerCase().contains("estoque"));
         verify(veiculoRepository, never()).save(any());
@@ -74,7 +71,6 @@ class VendaServiceTest {
 
     @Test
     void pagarBaixaEstoque() {
-        // Arrange
         Venda venda = new Venda();
         venda.setId(5L);
 
@@ -95,10 +91,8 @@ class VendaServiceTest {
         when(veiculoRepository.save(any(Veiculo.class))).thenAnswer(inv -> inv.getArgument(0));
         when(vendaRepository.save(any(Venda.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        // Act
         Venda pago = vendaService.pagar(5L);
 
-        // Assert
         assertEquals(VendaStatus.PAGA, pago.getStatus());
         assertEquals(1, veiculo.getQuantidadeEmEstoque());
         verify(veiculoRepository, times(1)).save(any(Veiculo.class));
@@ -107,7 +101,6 @@ class VendaServiceTest {
 
     @Test
     void cancelarDevolveEstoqueQuandoJaPago() {
-        // Arrange
         Venda venda = new Venda();
         venda.setId(7L);
         venda.setStatus(VendaStatus.PAGA);
@@ -128,10 +121,8 @@ class VendaServiceTest {
         when(veiculoRepository.save(any(Veiculo.class))).thenAnswer(inv -> inv.getArgument(0));
         when(vendaRepository.save(any(Venda.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        // Act
         Venda cancelada = vendaService.cancelar(7L);
 
-        // Assert
         assertEquals(VendaStatus.CANCELADA, cancelada.getStatus());
         assertEquals(2, veiculo.getQuantidadeEmEstoque());
         verify(veiculoRepository, times(1)).save(any(Veiculo.class));

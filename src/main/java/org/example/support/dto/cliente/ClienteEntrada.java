@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class ClienteRequest {
+public class ClienteEntrada {
     @NotBlank
     public String nome;
     @NotBlank

@@ -2,7 +2,7 @@ package org.example.support.dto.cliente;
 
 import org.example.support.domain.entity.Cliente;
 
-public class ClienteResponse {
+public class ClienteSaida {
     public Long id;
     public String nome;
     public String cpf;
@@ -11,8 +11,8 @@ public class ClienteResponse {
     public String endereco;
     public boolean ativo;
 
-    public static ClienteResponse from(Cliente c) {
-        ClienteResponse r = new ClienteResponse();
+    public static ClienteSaida from(Cliente c) {
+        ClienteSaida r = new ClienteSaida();
         r.id = c.getId();
         r.nome = c.getNome();
         r.cpf = c.getCpf();

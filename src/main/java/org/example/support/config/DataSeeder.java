@@ -14,7 +14,6 @@ public class DataSeeder {
     @Bean
     public CommandLineRunner seedUsers(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            // admin
             usuarioRepository.findByUsername("admin").orElseGet(() -> {
                 Usuario u = new Usuario();
                 u.setUsername("admin");
@@ -23,8 +22,6 @@ public class DataSeeder {
                 u.setAtivo(true);
                 return usuarioRepository.save(u);
             });
-
-            // vendedor
             usuarioRepository.findByUsername("vendedor").orElseGet(() -> {
                 Usuario u = new Usuario();
                 u.setUsername("vendedor");
