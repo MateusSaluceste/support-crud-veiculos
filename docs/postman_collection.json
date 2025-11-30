@@ -1,0 +1,98 @@
+{
+  "info": {
+    "name": "Support - Venda de Veículos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Coleção para testar endpoints com HTTP Basic. Credenciais: admin/admin123, vendedor/vendedor123"
+  },
+  "item": [
+    {
+      "name": "Listar Veículos",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Basic {{basic_admin}}" }
+        ],
+        "url": { "raw": "http://localhost:8080/api/veiculos", "host": ["http://localhost:8080"], "path": ["api","veiculos"] }
+      }
+    },
+    {
+      "name": "Criar Veículo",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Basic {{basic_admin}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla\",\n  \"ano\": 2020,\n  \"placa\": \"AAA1A11\",\n  \"precoVendaSugerido\": 95000,\n  \"quantidadeEmEstoque\": 3\n}"
+        },
+        "url": { "raw": "http://localhost:8080/api/veiculos", "host": ["http://localhost:8080"], "path": ["api","veiculos"] }
+      }
+    },
+    {
+      "name": "Listar Clientes",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Basic {{basic_vendedor}}" }
+        ],
+        "url": { "raw": "http://localhost:8080/api/clientes", "host": ["http://localhost:8080"], "path": ["api","clientes"] }
+      }
+    },
+    {
+      "name": "Criar Cliente",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Basic {{basic_vendedor}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"João Teste\",\n  \"cpf\": \"22233344455\"\n}"
+        },
+        "url": { "raw": "http://localhost:8080/api/clientes", "host": ["http://localhost:8080"], "path": ["api","clientes"] }
+      }
+    },
+    {
+      "name": "Criar Venda",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Basic {{basic_vendedor}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"clienteId\": 1,\n  \"formaPagamento\": \"PIX\",\n  \"itens\": [{ \"veiculoId\": 1, \"quantidade\": 1 }]\n}"
+        },
+        "url": { "raw": "http://localhost:8080/api/vendas", "host": ["http://localhost:8080"], "path": ["api","vendas"] }
+      }
+    },
+    {
+      "name": "Pagar Venda (id=1)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Basic {{basic_vendedor}}" }
+        ],
+        "url": { "raw": "http://localhost:8080/api/vendas/1/pagar", "host": ["http://localhost:8080"], "path": ["api","vendas","1","pagar"] }
+      }
+    },
+    {
+      "name": "Cancelar Venda (id=1)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Authorization", "value": "Basic {{basic_vendedor}}" }
+        ],
+        "url": { "raw": "http://localhost:8080/api/vendas/1/cancelar", "host": ["http://localhost:8080"], "path": ["api","vendas","1","cancelar"] }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "basic_admin", "value": "YWRtaW46YWRtaW4xMjM=" },
+    { "key": "basic_vendedor", "value": "dmVuZGVkb3I6dmVuZGVkb3IxMjM=" }
+  ]
+}
